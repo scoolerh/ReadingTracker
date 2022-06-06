@@ -3,7 +3,7 @@ header, footer
     background-color: whitesmoke;
     width: 100%;
     text-align: center; 
-    display: flex; 
+    display: inline;
 }
 nav
 {
@@ -43,11 +43,13 @@ h1
 {
     color: #ace3cb;
     font-size: 200%;
+    text-align: center;
 }
 h2
 {
     color: gray;
     font-size: 160%;
+    text-align: center;
 }
 h3
 {
@@ -61,5 +63,5 @@ section
     border: 2px whitesmoke;
     border-radius: 15px; 
     padding: 15px; 
-    margin: 20px 0px;
+    margin: 20px 10%;
 }
