@@ -2,6 +2,7 @@ import flask
 from flask import render_template, request 
 import json
 import sys
+import subprocess
 
 app = flask.Flask(__name__)
 
@@ -12,14 +13,22 @@ def home():
     '''
     Run the home page of the website. 
     '''
-    return render_template('index.php')
+    output = subprocess.run(["php", "index.php"], stdout=subprocess.PIPE)
+    return output.stdout
 
-@app.route('/about')
-def about():
+@app.route('/signup')
+def signup():
     '''
-    Run the about page of the website. 
+    Run the sign up page. 
     '''
-    return render_template('about.html')
+    return render_template('signup.php')
+
+@app.route('/login')
+def login():
+    '''
+    Run the log in page.
+    '''
+    return render_template('login.php')
 
 @app.route('/pagetracker')
 def pages():
