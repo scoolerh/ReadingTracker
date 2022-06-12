@@ -12,7 +12,7 @@ def home():
     '''
     Run the home page of the website. 
     '''
-    return render_template('index.html')
+    return render_template('index.php')
 
 @app.route('/about')
 def about():
