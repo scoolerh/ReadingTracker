@@ -14,20 +14,33 @@
         <nav>
             <ul>
                 <li><a href="/">Home</a></li>
-                <li><a href="/about">About Us</a></li>
+            {% if session.loggedin == True %}
                 <li><a href="/pagetracker">Page Tracker</a></li>
                 <li><a href="/completedbooks">My Books</a></li>
                 <li><a href="/stats">My Stats</a></li>
+                <li><a href="/logout">Log Out</a></li>
+            {% else %}
+                <li><a href="/signup">Sign Up</a></li>
+                <li><a href="/login">Log In</a></li>
+            {% endif %}
             </ul>
         </nav>
 
         <main>
             <section>
-                <h3>Welcome {{ session.username }}! This website will help you keep track of what you read, how much you read, and all of the stats you want to know about your favorite pasttime!</h3>
+                {% if session.loggedin == True %}
+                    <h3>Welcome {{ session.username }}! This website will help you keep track of what you read, how much you read, and all of the stats you want to know about your favorite pasttime!</h3>
+                {% else %}
+                    <h3>Welcome! This website will help you keep track of what you read, how much you read, and all of the stats you want to know about your favorite pasttime!</h3>
+                {% endif %}
             </section>
 
             <section>
-                <p>Not {{ session.username }}?</p><a href="{{ url_for('logout') }}" class="button">Logout here</a>
+                {% if session.loggedin == True %}
+                    <p>Not {{ session.username }}?</p><a href="{{ url_for('logout') }}" class="button">Logout here</a>
+                {% else %}
+                    <p>Want to create an account?</p><a href="{{ url_for('signup') }}">Sign up here</a>
+                {% endif %}
             </section>
 
             <div class="loginbox">

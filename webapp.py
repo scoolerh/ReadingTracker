@@ -13,16 +13,21 @@ app.secret_key = 'your secret key'
 
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_PASSWORD'] = 'your password'
+app.config['MYSQL_USER'] = 'han'
+app.config['MYSQL_PASSWORD'] = 'KarDiaRacDan02'
 app.config['MYSQL_DB'] = 'readingtrackerlogin'
 
 mysql = MySQL(app)
 
 @app.route('/')
-@app.route('/login', methods = ['GET', 'POST'])
 def home():
+    session['loggedin'] = False
+    return render_template('index.html', loggedin = False, username="")
+
+@app.route('/login', methods = ['GET', 'POST'])
+def login():
     '''
-    Run the home page of the website. 
+    Log in to the website  
     '''
     msg = ''
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
@@ -33,20 +38,22 @@ def home():
         account = cursor.fetchone()
         if account: 
             session['loggedin'] = True
-            session['id'] = account['id']
             session['username'] = account['username']
             msg = 'Logged in!'
-            return render_template('index.html', msg = msg)
+            return render_template('index.html', loggedin = True, username = session['username'])
         else: 
             msg = "Incorrect username or password."
-    return render_template('index.html', msg = msg)
+    return render_template('login.html', msg = msg)
 
-@app.route('logout')
+@app.route('/logout')
 def logout(): 
+    '''
+    Log out of the website
+    '''
     session.pop('loggedin', None)
     session.pop('id', None)
     session.pop('username', None)
-    return redirect(url_for('login'))
+    return redirect(url_for('signup'))
 
 @app.route('/signup', methods = ['GET', 'POST'])
 def signup():
@@ -63,26 +70,20 @@ def signup():
         account = cursor.fetchone()
         if account: 
             msg = "Account already exists."
-        elif not re.match(r'[^@+@[^@]+\.[^@]+', email): 
+        elif not re.match(r'[^@]+@[^@]+\.[^@]+', email): 
             msg = "Invalid email address."
         elif not re.match(r'[A-Za-z0-9]+', username):
             msg = "Username must contain only characters and numbers."
         elif not username or not password or not email: 
             msg = "You are missing at least one field."
         else: 
-            cursor.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s', (username, password, email, ))
+            cursor.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s)', (username, password, email, ))
             mysql.connection.commit()
             msg = "You have signed up!"
-    elif request.mehtod == 'POST': 
+            return redirect(url_for('login'))
+    elif request.method == 'POST': 
         msg = "You are missing at least one field."
     return render_template('signup.html', msg = msg)
-
-@app.route('/login')
-def login():
-    '''
-    Run the log in page.
-    '''
-    return render_template('login.html')
 
 @app.route('/pagetracker')
 def pages():
