@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Log In</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='stylesheet.css') }}">
+    </head>
+
+    <body>
+        <header> 
+            <h1>Reading Tracker</h1>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/signup">Sign Up</a></li>
+                <li><a href="/login">Log In</a></li>
+                <li><a href="/pagetracker">Page Tracker</a></li>
+                <li><a href="/completedbooks">My Books</a></li>
+                <li><a href="/stats">My Stats</a></li>
+            </ul>
+        </nav>
+
+        <main>
+            <section class="login-form">
+                <h2>Log In</h2>
+                <form action=" {{ url_for('login') }}" method="post">
+                    <div class="msg">{{ msg }}</div>
+                        <input id="username" name="username" type="text" placeholder="Username" class="textbox"/>
+                        <input id="password" name="password" type="password" placeholder="Password" class="textbox"/>
+                        <input type="submit" class="button" value="Sign In">
+                </form>
+                <p> Don't have an account? <a href="{{ url_for('signup') }}">Sign Up Here</a></p>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy;Hannah Scooler, 2022</p>
+        </footer>
+    </body>
+</html>
