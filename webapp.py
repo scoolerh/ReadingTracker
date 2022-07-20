@@ -19,16 +19,9 @@ app.config['MYSQL_DB'] = 'readingtrackerlogin'
 
 mysql = MySQL(app)
 
-@app.route('/')
-def home():
-    session['loggedin'] = False
-    return render_template('index.html', loggedin = False, username="")
-
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
-    '''
-    Log in to the website  
-    '''
+    session['loggedin'] = False
     msg = ''
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
         username = request.form['username']
@@ -40,7 +33,7 @@ def login():
             session['loggedin'] = True
             session['username'] = account['username']
             msg = 'Logged in!'
-            return render_template('index.html', loggedin = True, username = session['username'])
+            return render_template('books.html', loggedin = True, username = session['username'])
         else: 
             msg = "Incorrect username or password."
     return render_template('login.html', msg = msg)
